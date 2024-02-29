@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, minimum-scale=1, maximum-scale=1.0, user-scalable=0"/>
+    <title>小小趴-bdc</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 70vh;
+        }
+        @media screen and (max-width: 600px) {
+            body {
+              padding-top: 130px;
+            }
+            .container {
+              margin-top: 130px;
+            }
+            .button-row {
+              flex-wrap: wrap;
+            }
+            .button-row input[type="submit"],
+            .button-row button.button {
+              display: block;
+              margin: 10px;
+            }
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #8a8a8a;
+            border-radius: 10px;
+            background-color: #fff8f8;
+        }
+        .center {
+            text-align: center;
+        }
+        input[type="text"] {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[type="submit"],
+        button.button {
+            display: inline-block;
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #f38200;
+            margin-right: 10px; /* 在按钮右侧添加间距 */
+            margin-bottom: 10px; /* 在按钮下方添加间距 */
+        }
+        input[type="submit"]:hover,
+        button.button:hover {
+            background-color: #ff8800;
+        }
+        #result {
+            margin-top: 10px;
+            text-align: left;
+            font-size: 16px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #333;
+        }
+        .button-row {
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            flex-wrap: wrap; /* 允许按钮换行 */
+            margin-bottom: 10px; /* 为按钮行添加一些底部间距 */
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="container center">
+        <h1>查询谱面相关资源</h1>
+        <form id="queryForm" action="javascript:void(0);">
+            <input type="text" name="mm" placeholder="谱面ID" required>
+            <input type="submit" value="查询">
+        </form>
+        <div id="result">
+            <!-- 查询结果将在这里显示 -->
+        </div>
+    </div>
+    
+
+
+    </script> -->
+
+    <script>
+        document.getElementById('queryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var mm = document.querySelector('[name="mm"]').value;
+            queryChart(mm); // 启动查询函数
+        });
+
+        function queryChart(mm) {
+            console.log('开始查询，谱面ID:', mm);
+            const url = `https://chart.zjr2992.workers.dev/?apiUrl=https://bestdori.com/api/post/details?id=${mm}`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('网络响应错误');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('查询结果:', data);
+                    if (data && data.post) {
+                        // 处理数据
+                        const chartJson = JSON.stringify(data.post.chart).replace(/ /g, '').replace(/'/g, '"').replace(/True/g, 'true');
+                        const au_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/audio`;
+                        const co_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/cover`;
+                        const au = data.post.song && data.post.song.audio ? data.post.song.audio : '无';
+                        const co = data.post.song && data.post.song.cover ? data.post.song.cover : '无';
+
+                        // 显示结果并添加按钮
+                        displayResultsAndButtons(chartJson, au, co, au_ayachan, co_ayachan);
+                        alert("查询成功，请查看隐藏的内容。");
+                    } else {
+                        alert("查询失败，请检查谱面ID是否正确。");
+                    }
+                })
+                .catch(error => {
+                    console.error('查询失败:', error);
+                    alert("查询失败，请检查控制台了解详情。");
+                });
+        }
+
+        function displayResultsAndButtons(chartJson, au, co, au_ayachan, co_ayachan) {
+            const resultContainer = document.getElementById('result');
+            resultContainer.innerHTML = ''; // 清空现有内容
+
+            // 创建并添加按钮
+            addButton('复制谱面代码', () => copyToClipboard(chartJson), resultContainer);
+            addButton('复制音源链接', () => copyToClipboard(au), resultContainer);
+            addButton('复制封面链接', () => copyToClipboard(co), resultContainer);
+            addButton('下载 ayachan 音源', () => window.open(au_ayachan, '_blank'), resultContainer);
+            addButton('下载 ayachan 封面', () => window.open(co_ayachan, '_blank'), resultContainer);
+
+        }
+
+        function addButton(text, action, container) {
+            const button = document.createElement('button');
+            button.textContent = text;
+            button.onclick = action;
+            // 应用样式
+            button.className = 'button';
+            container.appendChild(button);
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("内容已复制到剪贴板");
+            }, (err) => {
+                console.error('复制失败:', err);
+            });
+        }
+    </script>
+</body>
+</html>
