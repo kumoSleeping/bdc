@@ -128,7 +128,15 @@
                     console.log('查询结果:', data);
                     if (data && data.post) {
                         // 处理数据
-                        const chartJson = JSON.stringify(data.post.chart).replace(/ /g, '').replace(/'/g, '"').replace(/True/g, 'true');
+                        try {
+                    // 尝试执行可能抛出错误的代码
+                        chartJson = JSON.stringify(data.post.chart).replace(/ /g, '').replace(/'/g, '"').replace(/True/g, 'true');
+                        } catch (error) {
+                            // 捕获到错误时执行
+                            console.error('处理chartJson时发生错误:', error);
+                            alert('错误，可能是查询的帖子不存在谱面。请查看控制台了解详情。');
+                            return; // 由于发生错误，提前退出函数
+                        }
                         const au_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/audio`;
                         const co_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/cover`;
                         const au = data.post.song && data.post.song.audio ? data.post.song.audio : '无';
