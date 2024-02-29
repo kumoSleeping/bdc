@@ -64,6 +64,14 @@
             background-color: #ff8800;
         }
         #result {
+
+            display: flex;
+            /*flex-direction: column;*/
+            /*可以换行*/
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            /* 其他样式保持不变 */
             margin-top: 10px;
             text-align: left;
             font-size: 16px;
@@ -135,13 +143,17 @@
                 })
                 .catch(error => {
                     console.error('查询失败:', error);
-                    alert("查询失败，请检查控制台了解详情。");
+                    alert("查询失败，请检查控制台了解详情。可能是因为连接不上 CloudFlare。", error);
                 });
         }
 
         function displayResultsAndButtons(chartJson, au, co, au_ayachan, co_ayachan) {
             const resultContainer = document.getElementById('result');
             resultContainer.innerHTML = ''; // 清空现有内容
+
+            // 创建一个新的 button-row 容器来存放按钮，并应用居中样式
+            const buttonRow = document.createElement('div');
+            buttonRow.className = 'button-row';
 
             // 创建并添加按钮
             addButton('复制谱面代码', () => copyToClipboard(chartJson), resultContainer);
@@ -150,6 +162,8 @@
             addButton('下载 ayachan 音源', () => window.open(au_ayachan, '_blank'), resultContainer);
             addButton('下载 ayachan 封面', () => window.open(co_ayachan, '_blank'), resultContainer);
 
+            // 将 button-row 容器添加到 result 容器中
+            resultContainer.appendChild(buttonRow);
         }
 
         function addButton(text, action, container) {
