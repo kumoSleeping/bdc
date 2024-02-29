@@ -127,7 +127,7 @@
 
                         // 显示结果并添加按钮
                         displayResultsAndButtons(chartJson, au, co, au_ayachan, co_ayachan);
-                        alert("查询成功，请查看隐藏的内容。");
+                        // alert("查询成功，请查看隐藏的内容。");
                     } else {
                         alert("查询失败，请检查谱面ID是否正确。");
                     }
@@ -162,7 +162,7 @@
 
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                alert("内容已复制到剪贴板");
+                // alert("内容已复制到剪贴板");
             }, (err) => {
                 console.error('复制失败:', err);
             });
