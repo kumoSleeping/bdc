@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, minimum-scale=1, maximum-scale=1.0, user-scalable=0"/>
     <title>bdc</title>
     <!-- Include Tailwind CSS from CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<!--    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="tailwindcss.css">
+
     <style>
         @keyframes slideDown {
             from {
@@ -31,7 +33,7 @@
 <body class="flex justify-center items-center bg-gradient-to-r from-blue-200 to-pink-200 pt-20">
     <div class="flex flex-col items-center w-full">
         <div class="container p-14 shadow-lg animate-slide-down my-4 bg-blue-100 blur-bg rounded-2xl">
-            <h1 class="text-center text-2xl font-bold text-gray-800">查询谱面相关资源</h1>
+            <h1 class="text-center text-2xl font-bold text-gray-800">解析谱面相关资源</h1>
             <p class="text-center text-gray-600 mt-2">本站需要连通 GitHub CloudFlare 站点，可能需要配合代理使用。</p>
             <form id="queryForm" class="mt-4 flex flex-col items-center" action="javascript:void(0);">
                 <input type="text" name="mm" class=" px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-transparent placeholder-gray-500 text-gray-800" placeholder="谱面ID" required>
@@ -91,13 +93,14 @@
                             displayError('查询异常', '大概是此ID的帖子不存在谱面文件。');
                             return; // 由于发生错误，提前退出函数
                         }
+                        const title = data.post.title + ' - ' + data.post.artists + '\n';
                         const au_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/audio`;
                         const co_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/cover`;
                         const au = data.post.song && data.post.song.audio ? data.post.song.audio : '无';
                         const co = data.post.song && data.post.song.cover ? data.post.song.cover : '无';
 
                         // 显示结果并添加按钮
-                        displayResultsAndButtons(chartJson, au, co, au_ayachan, co_ayachan);
+                        displayResultsAndButtons(title, chartJson, au, co, au_ayachan, co_ayachan);
                         // alert("查询成功，请查看隐藏的内容。");
                     } else {
                         displayError('查询异常', '未找到相关谱面，请检查谱面ID是否正确。');
@@ -136,7 +139,7 @@
     
         }
 
-        function displayResultsAndButtons(chartJson, au, co, au_ayachan, co_ayachan) {
+        function displayResultsAndButtons(title, chartJson, au, co, au_ayachan, co_ayachan) {
             const resultContainer = document.getElementById('result');
             const resultsContainer = document.getElementById('resultsContainer'); // 确保你有这个ID对应的元素
             resultContainer.innerHTML = ''; // 清空现有内容
@@ -147,13 +150,13 @@
 
             // 创建并添加标题
             const titleElement = document.createElement('h2');
-            titleElement.textContent = "查询结果"; // 你的标题文本
+            titleElement.textContent = title;
             titleElement.className = 'text-center text-2xl font-bold text-gray-800';
             resultContainer.appendChild(titleElement);
 
             // 创建并添加简短的介绍文本 - 第一部分
             const textElement1 = document.createElement('p');
-            textElement1.textContent = "以下是查询到的谱面资源"; // 第一部分文本
+            textElement1.textContent = "文件资源名以哈希命名，可自行添加后缀。"; // 第一部分文本
             textElement1.className = 'text-center text-gray-600';
             resultContainer.appendChild(textElement1);
 
