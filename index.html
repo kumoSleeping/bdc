@@ -63,7 +63,7 @@
 
         function queryChart(mm) {
             console.log('开始查询，谱面ID:', mm);
-            const url = `https://chart.mygo.fun/?apiUrl=https://bestdori.com/api/post/details?id=${mm}`;
+            const url = `https://chart-workers.kumo.ltd/?apiUrl=https://bestdori.com/api/post/details?id=${mm}`;
 
                 // 隐藏extraInfoContainer和resultsContainer每次查询开始时
                 const extraInfoContainer = document.getElementById('extraInfoContainer');
@@ -94,8 +94,8 @@
                         const title = data.post.title + ' - ' + data.post.artists + '\n';
                         const au_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/audio`;
                         const co_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/cover`;
-                        const au = data.post.song && data.post.song.audio ? data.post.song.audio : '无';
-                        const co = data.post.song && data.post.song.cover ? data.post.song.cover : '无';
+                        const au = data.post.song && data.post.song.audio ? data.post.song.audio : false; // TODO 无的时候不显示
+                        const co = data.post.song && data.post.song.cover ? data.post.song.cover : false;
 
                         // 显示结果并添加按钮
                         displayResultsAndButtons(title, chartJson, au, co, au_ayachan, co_ayachan);
@@ -170,8 +170,12 @@
 
             // 创建并添加按钮到buttonRow，使用Tailwind CSS的类
             addButton('复制谱面代码', () => copyToClipboard(chartJson), buttonRow);
-            addButton('复制音源链接', () => copyToClipboard(au), buttonRow);
-            addButton('复制封面链接', () => copyToClipboard(co), buttonRow);
+            if (au) {
+                addButton('下载音源', () => window.open(au, '_blank'), buttonRow);
+            }
+            if (co) {
+                addButton('下载封面', () => window.open(co, '_blank'), buttonRow);
+            }
             addButton('下载音源(ayachan反代)', () => window.open(au_ayachan, '_blank'), buttonRow);
             addButton('下载封面(ayachan反代)', () => window.open(co_ayachan, '_blank'), buttonRow);
         
