@@ -28,24 +28,38 @@
             animation: slideDown 0.4s ease-out forwards;
         }
 
- 
-            @keyframes bob {
-                0%, 100% { transform: translateY(-10px); }
-                50% { transform: translateY(10px); }
-            }
-            .bob {
-                animation: bob 4s infinite alternate;
-            }
-            @keyframes sway {
-                0%, 100% { transform: rotate(-3deg); }
-                50% { transform: rotate(3deg); }
-            }
-            .sway {
-                animation: sway 8s infinite alternate;
+
+        /*@keyframes bob {*/
+
+        /*    0%,*/
+        /*    100% {*/
+        /*        transform: translateY(-10px);*/
+        /*    }*/
+
+        /*    50% {*/
+        /*        transform: translateY(10px);*/
+        /*    }*/
+        /*}*/
+
+        .bob {
+            animation: bob 10s infinite alternate;
+        }
+
+        @keyframes sway {
+
+            0%,
+            100% {
+                transform: rotate(-16deg);
             }
 
+            50% {
+                transform: rotate(8deg);
+            }
+        }
 
-
+        .sway {
+            animation: sway 8s infinite alternate;
+        }
     </style>
 </head>
 
@@ -92,7 +106,8 @@
             正在查询
         </div>
 
-        <img id="floatingImage" src="/logo.png" alt="ksm" class="absolute bob sway w-16 h-16 opacity-90 right-12 top-6 pointer-events-none">
+        <img id="floatingImage" src="/logo.png" alt="ksm"
+            class="absolute sway w-16 h-16 opacity-90 right-12 top-6 pointer-events-none">
 
 
     </div>
@@ -147,7 +162,7 @@
                     } else {
                         author = data.post.author.username;
                     }
-                                        const au_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/audio`;
+                    const au_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/audio`;
                     const co_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/cover`;
                     const au = data.post.song && data.post.song.audio ? data.post.song.audio : false;
                     const co = data.post.song && data.post.song.cover ? data.post.song.cover : false;
@@ -272,27 +287,27 @@
         });
     }
 
-    function queryChartAlert (mm) {
+    function queryChartAlert(mm) {
         // alert("查询成功，请查看隐藏的内容。");
         const alertBox = document.getElementById('submitAlert');
-            alertBox.classList.remove('opacity-0'); // 显示提示
-            alertBox.classList.add('opacity-100');
+        alertBox.classList.remove('opacity-0'); // 显示提示
+        alertBox.classList.add('opacity-100');
 
-            setTimeout(() => {
-                alertBox.classList.remove('opacity-100'); // 几秒后隐藏提示
-                alertBox.classList.add('opacity-0');
-            }, 700); // time
-        
+        setTimeout(() => {
+            alertBox.classList.remove('opacity-100'); // 几秒后隐藏提示
+            alertBox.classList.add('opacity-0');
+        }, 700); // time
+
     }
 
-    document.addEventListener('mousemove', function(e) {
+    document.addEventListener('mousemove', function (e) {
         const floatingImage = document.getElementById('floatingImage');
         const mouseX = e.clientX;
         const mouseY = e.clientY;
-    
+
         const translateX = mouseX - (floatingImage.offsetWidth / 2 - 30);
         const translateY = mouseY - (floatingImage.offsetHeight / 2 - 30);
-    
+
         floatingImage.style.left = `${translateX}px`;
         floatingImage.style.top = `${translateY}px`;
     });
