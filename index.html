@@ -9,6 +9,7 @@
     <!-- Include Tailwind CSS from CDN -->
     <!--    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">-->
     <link rel="stylesheet" href="tailwindcss.css">
+    <link rel="icon" href="/logo.png" type="image/x-icon">
 
     <style>
         @keyframes slideDown {
@@ -26,8 +27,28 @@
         .animate-slide-down {
             animation: slideDown 0.4s ease-out forwards;
         }
+
+ 
+            @keyframes bob {
+                0%, 100% { transform: translateY(-10px); }
+                50% { transform: translateY(10px); }
+            }
+            .bob {
+                animation: bob 4s infinite alternate;
+            }
+            @keyframes sway {
+                0%, 100% { transform: rotate(-3deg); }
+                50% { transform: rotate(3deg); }
+            }
+            .sway {
+                animation: sway 8s infinite alternate;
+            }
+
+
+
     </style>
 </head>
+
 
 <body class="flex justify-center items-center bg-gradient-to-r from-blue-200 to-pink-200 pt-20">
     <div class="flex flex-col items-center w-full">
@@ -71,9 +92,12 @@
             正在查询
         </div>
 
+        <img id="floatingImage" src="/logo.png" alt="ksm" class="absolute bob sway w-16 h-16 opacity-90 right-12 top-6 pointer-events-none">
+
 
     </div>
 </body>
+
 
 
 <script>
@@ -116,8 +140,14 @@
                     }
                     const title = data.post.title + ' - ' + data.post.artists;
                     // "author":{"username":"LiyaWhite","nickname":"莉娅酱","titles":null},"likes":4,"liked":false,"tags":[]}}
-                    const author = data.post.author.username + ' - ' + (data.post.author.nickname ? data.post.author.nickname : '');
-                    const au_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/audio`;
+                    let author;
+
+                    if (data.post.author.nickname) {
+                        author = data.post.author.nickname + ' (' + data.post.author.username + ')';
+                    } else {
+                        author = data.post.author.username;
+                    }
+                                        const au_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/audio`;
                     const co_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/cover`;
                     const au = data.post.song && data.post.song.audio ? data.post.song.audio : false;
                     const co = data.post.song && data.post.song.cover ? data.post.song.cover : false;
@@ -254,6 +284,18 @@
             }, 700); // time
         
     }
+
+    document.addEventListener('mousemove', function(e) {
+        const floatingImage = document.getElementById('floatingImage');
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+    
+        const translateX = mouseX - (floatingImage.offsetWidth / 2 - 30);
+        const translateY = mouseY - (floatingImage.offsetHeight / 2 - 30);
+    
+        floatingImage.style.left = `${translateX}px`;
+        floatingImage.style.top = `${translateY}px`;
+    });
 
 </script>
 </body>
