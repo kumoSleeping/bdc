@@ -91,14 +91,16 @@
                             displayError('查询异常', '大概是此ID的帖子不存在谱面文件。');
                             return; // 由于发生错误，提前退出函数
                         }
-                        const title = data.post.title + ' - ' + data.post.artists + '\n';
+                        const title = data.post.title + ' - ' + data.post.artists;
+                        // "author":{"username":"LiyaWhite","nickname":"莉娅酱","titles":null},"likes":4,"liked":false,"tags":[]}}
+                        const author = data.post.author.username + ' - ' + (data.post.author.nickname ? data.post.author.nickname : '');
                         const au_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/audio`;
                         const co_ayachan = `https://proxy.ayachan.fun/assets/bestdori/${mm}/cover`;
                         const au = data.post.song && data.post.song.audio ? data.post.song.audio : false;
                         const co = data.post.song && data.post.song.cover ? data.post.song.cover : false;
 
                         // 显示结果并添加按钮
-                        displayResultsAndButtons(title, chartJson, au, co, au_ayachan, co_ayachan);
+                        displayResultsAndButtons(author, title, chartJson, au, co, au_ayachan, co_ayachan);
                         // alert("查询成功，请查看隐藏的内容。");
                     } else {
                         displayError('查询异常', '未找到相关谱面，请检查谱面ID是否正确。');
@@ -137,7 +139,7 @@
     
         }
 
-        function displayResultsAndButtons(title, chartJson, au, co, au_ayachan, co_ayachan) {
+        function displayResultsAndButtons(author, title, chartJson, au, co, au_ayachan, co_ayachan) {
             const resultContainer = document.getElementById('result');
             const resultsContainer = document.getElementById('resultsContainer'); // 确保你有这个ID对应的元素
             resultContainer.innerHTML = ''; // 清空现有内容
@@ -154,7 +156,7 @@
 
             // 创建并添加简短的介绍文本 - 第一部分
             const textElement1 = document.createElement('p');
-            textElement1.textContent = "文件资源名以哈希命名，可自行添加后缀。"; // 第一部分文本
+            textElement1.textContent = author; // 第一部分文本
             textElement1.className = 'text-center text-gray-600';
             resultContainer.appendChild(textElement1);
 
