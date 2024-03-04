@@ -173,10 +173,10 @@
             // 创建并添加按钮到buttonRow，使用Tailwind CSS的类
             addButton('复制谱面代码', () => copyToClipboard(chartJson), buttonRow);
             if (au) {
-                addButton('下载音源', () => window.open(au, '_blank'), buttonRow);
+                addButton('复制音源链接', () => window.open(au, '_blank'), buttonRow);
             }
             if (co) {
-                addButton('下载封面', () => window.open(co, '_blank'), buttonRow);
+                addButton('复制封面链接', () => window.open(co, '_blank'), buttonRow);
             }
             addButton('下载音源(ayachan反代)', () => window.open(au_ayachan, '_blank'), buttonRow);
             addButton('下载封面(ayachan反代)', () => window.open(co_ayachan, '_blank'), buttonRow);
