@@ -1,6 +1,6 @@
 # bdc
 
-## [c.mygo.fun](https://c.mygo.fun)
+## [c.kumo.ltd](https://c.kumo.ltd)
 
 分析: bestdori谱面相关资源，并提供复制与下载。
 
